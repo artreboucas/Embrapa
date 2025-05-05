@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  formatCurrency,
   preparoAreaData,
   insumosData,
   preparoSoloData,
   servicosData,
 } from "../../services/util/simulationData2";
 import "../../styles/style.css";
+import TableSimulatorTwo from "../../components/tables/table-simulator-two";
+import SummaryCards from "../../components/Cards";
 
 export default function Simulacao2() {
-  const [hectares, setHectares] = useState("Hectares: 1");
-  const [plantas, setPlantas] = useState("204 unid.");
+  const [hectares, setHectares] = useState(" 1");
+  const [plantas, setPlantas] = useState("204 ");
   const [editing, setEditing] = useState(null);
   const [data, setData] = useState({
     preparoArea: preparoAreaData,
@@ -63,286 +64,59 @@ export default function Simulacao2() {
         </h1>
       </header>
 
-      <div className="summary-cards">
-        <div className="summary-card">
-          <div className="summary-icon">
-            <FontAwesomeIcon icon="map-marked-alt" />
-          </div>
-          <div className="summary-content">
-            <span className="summary-label">Área Total</span>
-            <span
-              className="summary-value editable"
-              onClick={() => setEditing({ type: "hectares" })}
-            >
-              {editing?.type === "hectares" ? (
-                <input
-                  type="text"
-                  value={hectares}
-                  onChange={(e) => setHectares(e.target.value)}
-                  onBlur={() => setEditing(null)}
-                  autoFocus
-                  className="edit-input"
-                />
-              ) : (
-                hectares
-              )}
-            </span>
-          </div>
-        </div>
+      <SummaryCards
+        hectares={hectares}
+        plantas={plantas}
+        editing={editing}
+        setEditing={setEditing}
+        setHectares={setHectares}
+        setPlantas={setPlantas}
+        consolidatedTotal={totalConsolidado}
+      />
 
-        <div className="summary-card">
-          <div className="summary-icon">
-            <FontAwesomeIcon icon="seedling" />
-          </div>
-          <div className="summary-content">
-            <span className="summary-label">Total de Plantas</span>
-            <span
-              className="summary-value editable"
-              onClick={() => setEditing({ type: "plantas" })}
-            >
-              {editing?.type === "plantas" ? (
-                <input
-                  type="text"
-                  value={plantas}
-                  onChange={(e) => setPlantas(e.target.value)}
-                  onBlur={() => setEditing(null)}
-                  autoFocus
-                  className="edit-input"
-                />
-              ) : (
-                plantas
-              )}
-            </span>
-          </div>
-        </div>
+      <TableSimulatorTwo
+        tableData={data.preparoArea}
+        tableType="preparoArea"
+        editing={editing}
+        handleEditStart={handleEditStart}
+        handleEditChange={handleEditChange}
+        handleEditBlur={handleEditBlur}
+        calculateTotal={calculateTotal}
+      />
 
-        <div className="summary-card highlight">
-          <div className="summary-icon">
-            <FontAwesomeIcon icon="calculator" />
-          </div>
-          <div className="summary-content">
-            <span className="summary-label">Investimento Total</span>
-            <span className="summary-value">
-              {formatCurrency(totalConsolidado)}
-            </span>
-          </div>
-        </div>
-      </div>
+      <TableSimulatorTwo
+        tableData={data.insumos}
+        tableType="insumos"
+        editing={editing}
+        handleEditStart={handleEditStart}
+        handleEditChange={handleEditChange}
+        handleEditBlur={handleEditBlur}
+        calculateTotal={calculateTotal}
+      />
 
-      <section className="budget-section">
-        <div className="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th className="title">PREPARO DA ÁREA</th>
-                <th>Unidade</th>
-                <th>Quantidade</th>
-                <th>Valor unitário</th>
-                <th>Valor Total (R$)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.preparoArea.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.item}</td>
-                  <td>{item.unit}</td>
-                  <td
-                    className="editable"
-                    onClick={() => handleEditStart("preparoArea", index, "qty")}
-                  >
-                    {editing?.type === "preparoArea" &&
-                    editing?.index === index &&
-                    editing?.field === "qty" ? (
-                      <input
-                        type="number"
-                        value={item.qty}
-                        onChange={handleEditChange}
-                        onBlur={handleEditBlur}
-                        autoFocus
-                        className="edit-input"
-                      />
-                    ) : (
-                      item.qty
-                    )}
-                  </td>
-                  <td>{formatCurrency(item.unitValue)}</td>
-                  <td className="valor-total">
-                    {formatCurrency(item.qty * item.unitValue)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colSpan="4">SUBTOTAL PREPARO DA ÁREA</td>
-                <td>{formatCurrency(totalPreparoArea)}</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </section>
+      <TableSimulatorTwo
+        tableData={data.preparoSolo}
+        tableType="preparoSolo"
+        editing={editing}
+        handleEditStart={handleEditStart}
+        handleEditChange={handleEditChange}
+        handleEditBlur={handleEditBlur}
+        calculateTotal={calculateTotal}
+      />
 
-      <section className="budget-section">
-        <div className="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th className="title">INSUMOS</th>
-                <th>Unidade</th>
-                <th>Quantidade</th>
-                <th>Valor unitário</th>
-                <th>Valor Total (R$)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.insumos.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.item}</td>
-                  <td>{item.unit}</td>
-                  <td
-                    className="editable"
-                    onClick={() => handleEditStart("insumos", index, "qty")}
-                  >
-                    {editing?.type === "insumos" &&
-                    editing?.index === index &&
-                    editing?.field === "qty" ? (
-                      <input
-                        type="number"
-                        value={item.qty}
-                        onChange={handleEditChange}
-                        onBlur={handleEditBlur}
-                        autoFocus
-                        className="edit-input"
-                      />
-                    ) : (
-                      item.qty
-                    )}
-                  </td>
-                  <td>{formatCurrency(item.unitValue)}</td>
-                  <td className="valor-total">
-                    {formatCurrency(item.qty * item.unitValue)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colSpan="4">SUBTOTAL INSUMOS</td>
-                <td>{formatCurrency(totalInsumos)}</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </section>
+      <TableSimulatorTwo
+        tableData={data.servicos}
+        tableType="servicos"
+        editing={editing}
+        handleEditStart={handleEditStart}
+        handleEditChange={handleEditChange}
+        handleEditBlur={handleEditBlur}
+        calculateTotal={calculateTotal}
+      />
 
-      <section className="budget-section">
-        <div className="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th className="title">PREPARO DO SOLO</th>
-                <th>Unidade</th>
-                <th>Quantidade</th>
-                <th>Valor unitário</th>
-                <th>Valor Total (R$)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.preparoSolo.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.item}</td>
-                  <td>{item.unit}</td>
-                  <td
-                    className="editable"
-                    onClick={() => handleEditStart("preparoSolo", index, "qty")}
-                  >
-                    {editing?.type === "preparoSolo" &&
-                    editing?.index === index &&
-                    editing?.field === "qty" ? (
-                      <input
-                        type="number"
-                        value={item.qty}
-                        onChange={handleEditChange}
-                        onBlur={handleEditBlur}
-                        autoFocus
-                        className="edit-input"
-                      />
-                    ) : (
-                      item.qty
-                    )}
-                  </td>
-                  <td>{formatCurrency(item.unitValue)}</td>
-                  <td className="valor-total">
-                    {formatCurrency(item.qty * item.unitValue)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colSpan="4">SUBTOTAL PREPARO DO SOLO</td>
-                <td>{formatCurrency(totalPreparoSolo)}</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </section>
-
-      <section className="budget-section">
-        <div className="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th className="title">SERVIÇOS</th>
-                <th>Unidade</th>
-                <th>Quantidade</th>
-                <th>Valor unitário</th>
-                <th>Valor Total (R$)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.servicos.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.item}</td>
-                  <td>{item.unit}</td>
-                  <td
-                    className="editable"
-                    onClick={() => handleEditStart("servicos", index, "qty")}
-                  >
-                    {editing?.type === "servicos" &&
-                    editing?.index === index &&
-                    editing?.field === "qty" ? (
-                      <input
-                        type="number"
-                        value={item.qty}
-                        onChange={handleEditChange}
-                        onBlur={handleEditBlur}
-                        autoFocus
-                        className="edit-input"
-                      />
-                    ) : (
-                      item.qty
-                    )}
-                  </td>
-                  <td className="valor-uni">{formatCurrency(item.unitValue)}</td>
-                  <td className="valor-total">
-                    {formatCurrency(item.qty * item.unitValue)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colSpan="4">SUBTOTAL SERVIÇOS</td>
-                <td>{formatCurrency(totalServicos)}</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </section>
-      <div class="action-buttons">
-      <button onClick={handlePrint} className="btn btn-print">
-        <FontAwesomeIcon icon="fa-solid fa-print"/> Imprimir
+      <div className="action-buttons">
+        <button onClick={handlePrint} className="btn btn-print">
+          <FontAwesomeIcon icon="fa-solid fa-print" /> Imprimir
         </button>
       </div>
     </div>

@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faTree,
-  faExchangeAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTree, faExchangeAlt } from "@fortawesome/free-solid-svg-icons";
 import "./style.css";
 
 export default function Home() {
@@ -22,12 +19,12 @@ export default function Home() {
             </p>
           </div>
           <div className="card-footer">
-            <Link to="/simulacao1" className="card-button">
+            <Link to="/simulação-implantação-de-pomar" className="card-button">
               Acessar Simulação
             </Link>
           </div>
         </div>
-        
+
         <div className="card card-orange-dark">
           <div className="card-header">
             <FontAwesomeIcon icon={faExchangeAlt} className="card-icon" />
@@ -40,7 +37,7 @@ export default function Home() {
             </p>
           </div>
           <div className="card-footer">
-            <Link to="/simulacao2" className="card-button">
+            <Link to="/simulação-substituição-de-copa" className="card-button">
               Acessar Simulação
             </Link>
           </div>

@@ -150,7 +150,8 @@ table {
     min-width: 800px;
 }
 
-th, td {
+th,
+td {
     padding: 15px;
     text-align: left;
     border-bottom: 1px solid var(--border);
@@ -176,11 +177,13 @@ tr:nth-child(even) {
     width: 40%;
 }
 
-.unit-col, .qty-col {
+.unit-col,
+.qty-col {
     width: 20%;
 }
 
-.value-col, .total-col {
+.value-col,
+.total-col {
     width: 20%;
     text-align: right;
 }
@@ -291,11 +294,11 @@ tfoot td {
         align-items: flex-start;
         gap: 15px;
     }
-    
+
     .summary-cards {
         grid-template-columns: 1fr;
     }
-    
+
     .cards-container {
         grid-template-columns: 1fr;
     }
@@ -305,16 +308,17 @@ tfoot td {
     body {
         padding: 10px;
     }
-    
+
     .dashboard-header h1 {
         font-size: 1.3rem;
     }
-    
-    th, td {
+
+    th,
+    td {
         padding: 12px 8px;
         font-size: 0.9rem;
     }
-    
+
     .btn {
         width: 100%;
         justify-content: center;
