@@ -1,40 +1,55 @@
+@import "tailwindcss";
+
 body {
+  @apply 
+  
+  leading-[1.6] 
+  text-[#333] 
+  bg-[#f9f9f9] 
+  m-0 
+  p-[20px];
+
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  color: #333;
-  background-color: #f9f9f9;
-  margin: 0;
-  padding: 20px;
 }
 
 a {
-  text-decoration: none;
-  color: inherit;
+  @apply 
+  
+  no-underline 
+  text-inherit;
 }
 
 .home-container {
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
-  padding: 40px 20px;
+  @apply 
+  
+  max-w-[800px] 
+  mx-auto 
+  text-center 
+  py-[40px] 
+  px-[20px];
 }
 
 .simulation-links {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  margin-top: 40px;
+  @apply 
+  
+  flex gap-[20px] 
+  justify-center 
+  mt-[40px];
 }
 
 .simulation-link {
-  padding: 15px 30px;
-  background: #E67E22;
-  color: white;
-  border-radius: 6px;
-  font-weight: bold;
-  transition: background 0.3s;
+  @apply 
+  
+  px-[30px] 
+  py-[15px] 
+  bg-[#E67E22] 
+  text-white 
+  rounded-[6px] 
+  font-bold transition-all duration-300 ease-in-out;
 }
 
 .simulation-link:hover {
-  background: #D35400;
+  @apply 
+  
+  bg-[#D35400];
 }
