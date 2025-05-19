@@ -33,5 +33,5 @@ export const preparoAreaData = [
     { item: "Poda de cajueiro", unit: "h/diária", qty: 30, unitValue: 100.00 },
     { item: "Capina", unit: "h/diária", qty: 25, unitValue: 70.00 },
     { item: "Aplicação de defensivos", unit: "h/diária", qty: 15, unitValue: 70.00 },
-    { item: "Clonagem de tocos", unit: "h/diária", qty: 5000, unitValue: 100.00 }
+    { item: "Clonagem de tocos", unit: "h/diária", qty: 24, unitValue: 100.00 }
   ]
