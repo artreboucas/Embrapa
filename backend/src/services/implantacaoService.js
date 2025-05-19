@@ -12,17 +12,16 @@ function carregarPlanilha(nomeArquivo) {
 function processarImplantacaoBase() {
   const linhas = carregarPlanilha('implantacaocajueiroanaosimulacao.xlsx');
   
-  // Linha 3 (index 2) com hectares e qtd de plantas
   const linhaHectaresPlantas = linhas[2];
   const hectares = Number(linhaHectaresPlantas[1]) || 1;
   const qtdPlantas = Number(linhaHectaresPlantas[4]) || 204;
   
   // Blocos principais da planilha
-  const preparoSolo = linhas.slice(5, 26); // linhas 6 a 26 (index 5 a 25)
-  const insumos = linhas.slice(28, 35); // linhas 29 a 35 (index 28 a 34)
-  const subtotalSolo = linhas[26]; // linha 27 (index 26)
-  const subtotalInsumos = linhas[35]; // linha 36 (index 35)
-  const valorTotal = linhas[36]; // linha 37 (index 36)
+  const preparoSolo = linhas.slice(5, 26); 
+  const insumos = linhas.slice(28, 35); 
+  const subtotalSolo = linhas[26]; 
+  const subtotalInsumos = linhas[35]; 
+  const valorTotal = linhas[36]; 
 
   // Monta o JSON final
   const jsonFinal = {
