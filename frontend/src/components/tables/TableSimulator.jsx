@@ -36,7 +36,7 @@ const TableSimulator = ({
                    col === 'unitValue' ? 'VALOR UNITÁRIO' : col}
                 </th>
               ))}
-              <th>SUBTOTAL</th>
+              <th>TOTAL</th>
             </tr>
           </thead>
           <tbody>
