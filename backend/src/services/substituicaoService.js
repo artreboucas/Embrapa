@@ -12,21 +12,20 @@ function carregarPlanilha(nomeArquivo) {
 function processarSubstituicaoBase() {
   const linhas = carregarPlanilha('substituicaodecopasimulacao.xlsx');
   
-  // Linha 3 (index 2) com hectares e qtd de plantas
   const linhaHectaresPlantas = linhas[2];
   const hectares = Number(linhaHectaresPlantas[1]) || 1;
   const qtdPlantas = Number(linhaHectaresPlantas[4]) || 100;
   
    // Blocos principais da planilha
-  const preparoArea = linhas.slice(5, 12); // Linhas de preparo de área
-  const insumos = linhas.slice(14, 19); // Linhas de insumos
-  const preparoSolo = linhas.slice(21, 24); // Linhas de preparo do solo
-  const servicos = linhas.slice(26, 30); // Linhas de serviços
-  const subtotalPreparoArea = linhas[12]; // Subtotal do preparo de área
-  const subtotalPreparoSolo = linhas[24]; // Subtotal do preparo do solo
-  const subtotalInsumos = linhas[19]; // Subtotal dos insumos
-  const subtotalServicos = linhas[30]; // Subtotal dos serviços
-  const valorTotal = linhas[31]; // Valor total final
+  const preparoArea = linhas.slice(5, 12); 
+  const insumos = linhas.slice(14, 19);
+  const preparoSolo = linhas.slice(21, 24); 
+  const servicos = linhas.slice(26, 30); 
+  const subtotalPreparoArea = linhas[12];
+  const subtotalPreparoSolo = linhas[24]; 
+  const subtotalInsumos = linhas[19]; 
+  const subtotalServicos = linhas[30]; 
+  const valorTotal = linhas[31]; 
 
   // Monta o JSON final
   const jsonFinal = {
