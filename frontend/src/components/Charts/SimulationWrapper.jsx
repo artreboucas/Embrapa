@@ -12,8 +12,7 @@ const SimulationWrapper = ({
   icon = "tractor",
   columnsConfig
 }) => {
-  const [hectares, setHectares] = useState(" 1");
-  const [plantas, setPlantas] = useState("204 ");
+  const [hectares, setHectares] = useState(1);
   const [editing, setEditing] = useState(null);
   const [showChart, setShowChart] = useState(false);
   const [viewMode, setViewMode] = useState("summary");
@@ -22,8 +21,13 @@ const SimulationWrapper = ({
   const toggleChart = () => setShowChart(!showChart);
   const changeViewMode = (mode) => setViewMode(mode);
 
+  const handleHectaresChange = (value) => {
+    const intValue = parseInt(value) || 1;
+    setHectares(Math.max(1, intValue));
+  };
+
   const calculate = (items) => 
-    items.reduce((sum, item) => sum + item.qty * item.unitValue, 0);
+    items.reduce((sum, item) => sum + (item.qty * item.unitValue * hectares), 0);
 
   const chartData = useMemo(() => {
     const categories = {};
@@ -39,7 +43,7 @@ const SimulationWrapper = ({
 
       items.forEach(item => {
         detailedLabels.push(item.item);
-        detailedValues.push(item.qty * item.unitValue);
+        detailedValues.push(item.qty * item.unitValue * hectares);
       });
     });
 
@@ -52,7 +56,24 @@ const SimulationWrapper = ({
       detailedValues,
       total
     };
-  }, [data]);
+  }, [data, hectares]);
+
+  const handleEditStart = (tableType, index, field) => {
+    setEditing({ type: tableType, index, field });
+  };
+
+  const handleEditChange = (e, tableType, index, field) => {
+    const value = field === 'unitValue' ? 
+      parseFloat(e.target.value) || 0 : 
+      e.target.value;
+    
+    setData(prev => ({
+      ...prev,
+      [tableType]: prev[tableType].map((item, idx) => 
+        idx === index ? { ...item, [field]: value } : item
+      )
+    }));
+  };
 
   return (
     <div className="dashboard-container">
@@ -65,52 +86,39 @@ const SimulationWrapper = ({
 
       <SummaryCards
         hectares={hectares}
-        plantas={plantas}
         editing={editing}
         setEditing={setEditing}
-        setHectares={setHectares}
-        setPlantas={setPlantas}
+        setHectares={handleHectaresChange}
         consolidatedTotal={chartData.total}
       />
 
-        <div className={`tables-section ${showChart ? 'hidden' : ''}`}>
+      <div className={`tables-section ${showChart ? 'hidden' : ''}`}>
         {Object.keys(data).map((tableType) => (
-            <TableSimulator
+          <TableSimulator
             key={tableType}
             tableData={data[tableType]}
             tableType={tableType}
             columnsConfig={columnsConfig}
             editing={editing}
-            handleEditStart={(type, index, field) =>
-                setEditing({ type: tableType, index, field })
-            }
-            handleEditChange={(e) => {
-                const { value } = e.target;
-                setData((prev) => ({
-                ...prev,
-                [tableType]: prev[tableType].map((item, idx) =>
-                    idx === editing.index
-                    ? { ...item, [editing.field]: parseFloat(value) || 0 }
-                    : item
-                ),
-                }));
-            }}
+            handleEditStart={handleEditStart}
+            handleEditChange={(e) => handleEditChange(e, tableType, editing?.index, editing?.field)}
             handleEditBlur={() => setEditing(null)}
-            />
+            hectares={hectares}
+          />
         ))}
-        </div>
+      </div>
 
-        {showChart && (
+      {showChart && (
         <div className="chart-section">
-            <DynamicChart 
+          <DynamicChart 
             data={chartData} 
             viewMode={viewMode}
             simulationType={simulationType} 
-            />
+          />
         </div>
-        )}
+      )}
 
-              <div className="action-buttons">
+      <div className="action-buttons">
         <ChartButton
           showChart={showChart}
           viewMode={viewMode}

@@ -2,7 +2,7 @@ import React from 'react';
 
 const FIRST_COLUMN_TITLES = {
   preparoSolo: "PREPARO DO SOLO",
-  insumos: "INSUMOS",
+  insumos: "INSUMOS", 
   preparoArea: "PREPARO DA ÁREA",
   servicos: "SERVIÇOS"
 };
@@ -14,12 +14,13 @@ const TableSimulator = ({
   editing,
   handleEditStart,
   handleEditChange,
-  handleEditBlur
+  handleEditBlur,
+  hectares
 }) => {
   const columns = columnsConfig[tableType] || [];
 
   const totalGeral = tableData.reduce((total, row) => {
-    return total + (row.qty * row.unitValue);
+    return total + (row.qty * row.unitValue * hectares);
   }, 0);
 
   return (
@@ -48,21 +49,49 @@ const TableSimulator = ({
                      editing?.index === rowIndex && 
                      editing?.field === col ? (
                       <input
-                        type="number"
+                        type={col === 'unitValue' ? 'number' : 'text'}
                         value={row[col]}
                         onChange={handleEditChange}
                         onBlur={handleEditBlur}
                         autoFocus
-                        className="edit-input"
+                        style={{
+                          border: '1px solid #4a90e2',
+                          borderRadius: '4px',
+                          padding: '4px 8px',
+                          width: col === 'qty' ? '70px' : '100px'
+                        }}
+                        step={col === 'unitValue' ? '0.01' : '1'}
                       />
                     ) : (
-                      <span onDoubleClick={() => handleEditStart(tableType, rowIndex, col)}>
-                        {col === 'unitValue' ? `R$ ${row[col].toFixed(2)}` : row[col]}
-                      </span>
+                      <div
+                        onDoubleClick={() => col === 'qty' && handleEditStart(tableType, rowIndex, col)}
+                        style={{
+                          padding: '4px 8px',
+                          borderRadius: '4px',
+                          transition: 'background-color 0.2s ease',
+                          cursor: col === 'qty' ? 'pointer' : 'default',
+                          backgroundColor: (editing?.type === tableType && 
+                                        editing?.index === rowIndex && 
+                                        editing?.field === col) ? '#f0f7ff' : 'transparent'
+                        }}
+                        onMouseEnter={(e) => col === 'qty' && (e.currentTarget.style.backgroundColor = '#f0f7ff')}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 
+                            (editing?.type === tableType && 
+                             editing?.index === rowIndex && 
+                             editing?.field === col) ? '#f0f7ff' : 'transparent';
+                        }}
+                      >
+                        {col === 'unitValue' ? 
+                          `R$ ${parseFloat(row[col]).toFixed(2)}` : 
+                          row[col]}
+                      </div>
                     )}
                   </td>
                 ))}
-                <td className="total-col">R$ {(row.qty * row.unitValue).toFixed(2)}</td>
+                <td className="total-col">
+                  R$ {(row.qty * row.unitValue * hectares).toFixed(2)}
+                </td>
               </tr>
             ))}
           </tbody>
