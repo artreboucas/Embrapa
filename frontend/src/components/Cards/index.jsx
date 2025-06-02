@@ -10,6 +10,8 @@ export default function SummaryCards({
 }) {
   const plantas = 204 * hectares;
 
+  const isMobile = window.innerWidth <= 768;
+
   return (
     <div className="summary-cards">
       <div className="summary-card">
@@ -18,36 +20,48 @@ export default function SummaryCards({
         </div>
         <div className="summary-content">
           <span className="summary-label">Área Total</span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '17px', fontWeight: '600'}}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '17px', fontWeight: '600' }}>
             Hectares:
-            <span 
+            <span
               onClick={() => setEditing({ type: "hectares" })}
               style={{
                 padding: '1px 12px',
                 borderRadius: '4px',
                 cursor: 'pointer',
                 transition: 'background-color 0.2s ease',
-                backgroundColor: editing?.type === "hectares" ? '#f0f7ff' : 'transparent',
-                border: editing?.type === "hectares" ? '1px solid #4a90e2' : 'none'
+                backgroundColor:
+                  editing?.type === "hectares" || isMobile
+                    ? '#f0f7ff'
+                    : 'transparent',
+                border:
+                  editing?.type === "hectares" || isMobile
+                    ? '1px solid #4a90e2'
+                    : 'none',
               }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f0f7ff'}
+              onMouseEnter={(e) => {
+                if (!isMobile) e.currentTarget.style.backgroundColor = '#f0f7ff';
+              }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 
-                  editing?.type === "hectares" ? '#f0f7ff' : 'transparent';
+                if (!isMobile) {
+                  e.currentTarget.style.backgroundColor =
+                    editing?.type === "hectares" ? '#f0f7ff' : 'transparent';
+                }
               }}
             >
               {editing?.type === "hectares" ? (
                 <input
                   type="number"
                   value={hectares}
-                  onChange={(e) => setHectares(Math.max(1, parseInt(e.target.value) || 1))}
+                  onChange={(e) =>
+                    setHectares(Math.max(1, parseInt(e.target.value) || 1))
+                  }
                   onBlur={() => setEditing(null)}
                   autoFocus
                   style={{
                     border: 'none',
                     background: 'transparent',
                     width: '50px',
-                    outline: 'none'
+                    outline: 'none',
                   }}
                   min="1"
                   step="1"

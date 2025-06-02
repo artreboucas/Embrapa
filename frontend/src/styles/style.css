@@ -59,19 +59,24 @@ body { @apply text-[var(--text)] bg-[var(--bg)] leading-[1.6]; font-family: 'Seg
 .table-responsive { @apply overflow-x-auto overflow-y-hidden rounded-[8px] shadow-[var(--shadow)]; -webkit-overflow-scrolling: touch; }
 
 .table-responsive-container {
-  @apply w-full max-w-[1440px] mx-auto mb-6 overflow-hidden shadow-md rounded-lg;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  margin: 20px;
+  @apply w-full max-w-[1440px] mx-auto mb-6;
+}
+
+.outer-container {
+  margin: 0 20px;
 }
 
 .table-scroll-wrapper {
-  @apply w-full overflow-x-auto bg-white;
+  width: 100%; 
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
 .mobile-responsive-table {
-  @apply w-full min-w-[800px] border-collapse;
+  width: 100%;
+  min-width: 1000px;
 }
+
 
 .mobile-responsive-table th,
 .mobile-responsive-table td {
@@ -295,31 +300,36 @@ tfoot td { @apply font-bold border-b-0; }
 
 @media (max-width: 768px) {
   .chart-container {
-    height: 400px;
+    height: 600px;
     padding: 15px;
   }
-  
+
   .chart-controls {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .view-mode-toggle {
     margin-left: 0;
     width: 100%;
   }
 
-  .chart-container {
-    height: 600px;
-  }
-  
   .view-mode-switcher {
     flex-direction: column;
   }
-  
+
   .view-mode-btn {
     padding: 8px;
     font-size: 0.85rem;
+  }
+
+  .dashboard-header { @apply flex flex-col items-start gap-[15px]; }
+  .summary-cards { @apply grid grid-cols-1; }
+  .cards-container { @apply grid grid-cols-1; }
+
+  .mobile-hover {
+    background-color: #f0f7ff !important;
+      border: 1px solid #4a90e2 !important;
   }
 }
 
@@ -328,18 +338,10 @@ tfoot td { @apply font-bold border-b-0; }
     height: 350px;
     padding: 12px;
   }
-}
 
-@media (max-width: 768px) {
-    .dashboard-header { @apply flex flex-col items-start gap-[15px]; }
-    .summary-cards { @apply grid grid-cols-1;  }
-    .cards-container { @apply grid grid-cols-1; }
-}
-
-@media (max-width: 480px) {
-    .dashboard-header h1 { @apply text-[1.3rem]; }
-    th, td { @apply px-[8px] py-[12px] text-[0.9rem]; }
-    .btn { @apply w-full justify-center; }
+  .dashboard-header h1 { @apply text-[1.3rem]; }
+  th, td { @apply px-[8px] py-[12px] text-[0.9rem]; }
+  .btn { @apply w-full justify-center; }
 }
 
 .hidden { @apply hidden; }
